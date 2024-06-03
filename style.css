@@ -1,0 +1,116 @@
+html,
+body {
+  position: relative;
+  z-index: 0;
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background: #eee;
+  color: #000;
+}
+
+/*bottom*/
+.bottomtext {
+  position: sticky;
+  z-index: 50;
+}
+.bottomtext>p {
+  color: azure;
+  font-family: "Indie Flower", cursive;
+  font-weight: 400;
+  font-style: normal;
+  margin: 10px;
+  font-size: 15px;
+  text-shadow: 1px 1px 5px brown;
+  user-select: none;
+}
+
+/*swiper*/
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-wrapper {
+  display:flexbox;
+}
+.swiper-slide img {
+  display:block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit:cover;
+  user-select: none;
+}
+
+.swiper {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/*intro lol*/
+
+#intro {
+  display: none; /* Ban đầu ẩn GIF */
+  position: absolute;
+  size-adjust: 200px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 500;
+}
+/* go to top button*/
+
+.gototop {
+  display: none;
+  border:1px solid gray;
+  border-radius: 50%;
+  position: fixed;
+  padding: 4px 5px;
+  right:40px;
+  bottom: 100px;
+  z-index: 500;
+}
+
+/*canvas*/
+
+main{
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/*header*/
+header {
+  position: absolute;
+
+  width: 100%;
+  z-index: 100;
+  display: flex;
+  transition: 300ms;
+}
+.inner {
+
+  margin: 10px;
+}
+
+.navigate {
+  /* background-color: rgba(1,1,1,1);  */
+  display: flex; 
+  margin: 10px;
+}
+
+.navigate>li {
+  list-style: none;
+  display: flex;
+}
+.navigate>li img{
+  justify-content: center;
+
+  display: inline-flexbox;
+  height: 30px;
+  margin: 5px 5px 5px 5px;
+}
