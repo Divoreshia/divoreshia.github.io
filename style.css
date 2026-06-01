@@ -114,3 +114,79 @@ header {
   height: 30px;
   margin: 5px 5px 5px 5px;
 }
+
+
+ /* LOADER  */
+
+#app {
+    min-height: 100vh;
+}
+
+/* =========================
+   PRELOADER
+========================= */
+
+#preloader {
+    position: fixed;
+    inset: 0;
+    background: #fff;
+    z-index: 99999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    opacity: 1;
+}
+
+.logo-wrapper {
+    position: relative;
+}
+
+.logo {
+    display: block;
+    width: min(800px, 80vw);
+    height: auto;
+}
+
+/* logo nền trắng */
+.logo-white {
+    opacity: 1;
+}
+
+/* vùng mask */
+.logo-mask {
+    position: absolute;
+    inset: 0;
+
+    width: 0%;
+    overflow: hidden;
+
+    transition: width 0.1s linear;
+}
+
+/* logo đen */
+.logo-black {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+
+    filter:
+        brightness(0)
+        saturate(100%);
+}
+
+/* logo đen -> trắng */
+.logo-black.fade-white {
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+/* fade loader */
+#preloader.hide {
+    opacity: 0;
+    transition: opacity 1s ease;
+    pointer-events: none;
+}
