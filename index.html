@@ -26,14 +26,26 @@ integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIe
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
-<body onload="intro()">
-
-<!--intro-lol-->
-<div id="intro">
-  <img src="Hello/name/name.gif" alt="Divoreshia">
-</div>
-
-
+<body>
+ <!-- Loader -->
+    <div id="preloader">
+        <div class="logo-wrapper">
+            <!-- Logo trắng -->
+            <img
+                src="loader.png"
+                class="logo logo-white"
+                alt=""
+            >
+            <!-- Logo đen được mask -->
+            <div class="logo-mask">
+                <img
+                    src="loader.png"
+                    class="logo logo-black"
+                    alt=""
+                >
+            </div>
+        </div>
+    </div>
 
 <!--HEADER-->
   <header>
@@ -79,7 +91,7 @@ integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIe
 
 
 
-<main class="canvas"> 
+<main class="canvas" id="app"> 
     <!--DIVORESHIA-->
 
 
@@ -115,7 +127,7 @@ integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIe
 
 
 </main> 
-
+<script src="loader.js"></script>
 <!--GO TO TOP BUTTON-->
 <!-- <div>
   <a id="gototop" href="Javascript:;"><img src="./Hello/icon/triangle.png" width="30px" height="30px"
