@@ -113,39 +113,55 @@ header {
 }
 
 /* =========================
-   PRELOADER
+   LOADER
 ========================= */
+
 #preloader {
     position: fixed;
     inset: 0;
-    background: white;
+
+    background: #ffffff;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
     z-index: 99999;
+
+    opacity: 1;
 }
+
+/* container logo */
 
 .logo-wrapper {
     position: relative;
+
     width: min(900px, 80vw);
+
+    line-height: 0;
 }
+
+/* cả hai logo */
 
 .logo {
     display: block;
+
     width: 100%;
     height: auto;
 }
 
 /* logo trắng */
+
 .logo-white {
-    display: block;
+    position: relative;
+    z-index: 1;
 }
 
-/* lớp reveal */
+/* lớp mask */
+
 #reveal {
     position: absolute;
+
     top: 0;
     left: 0;
 
@@ -153,36 +169,34 @@ header {
     height: 100%;
 
     overflow: hidden;
+
+    z-index: 2;
 }
 
 /* logo đen */
+
 .logo-black {
-    position: absolute;
-    top: 0;
-    left: 0;
+    display: block;
 
     width: 100%;
-    height: 100%;
-
-    object-fit: contain;
+    height: auto;
 
     filter: brightness(0);
-}
 
-.logo-black {
     opacity: 1;
 }
+
+/* đen -> trắng */
 
 .logo-black.to-white {
     opacity: 0;
     transition: opacity 1s ease;
 }
 
-#preloader {
-    opacity: 1;
-}
+/* fade loader */
 
 #preloader.fade-out {
     opacity: 0;
     transition: opacity 1s ease;
+    pointer-events: none;
 }
