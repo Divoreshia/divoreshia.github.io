@@ -159,31 +159,23 @@ header {
 
 /* lớp mask */
 
-#reveal {
-    position: absolute;
+#reveal{
+    position:absolute;
+    top:0;
+    left:0;
 
-    top: 0;
-    left: 0;
+    width:0%;
+    height:auto;
 
-    width: 0%;
-    height: 100%;
-
-    overflow: hidden;
-
-    z-index: 2;
+    overflow:hidden;
 }
 
-/* logo đen */
+.logo-black{
+    width:min(900px,80vw);
+    height:auto;
+    display:block;
 
-.logo-black {
-    display: block;
-
-    width: 100%;
-    height: auto;
-
-    filter: brightness(0);
-
-    opacity: 1;
+    filter:brightness(0);
 }
 
 /* đen -> trắng */
