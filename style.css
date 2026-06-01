@@ -51,17 +51,7 @@ body {
   margin-right: auto;
 }
 
-/*intro lol*/
 
-#intro {
-  display: none; /* Ban đầu ẩn GIF */
-  position: absolute;
-  size-adjust: 200px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 500;
-}
 /* go to top button*/
 
 .gototop {
