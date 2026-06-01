@@ -1,51 +1,42 @@
-const preloader = document.getElementById("preloader");
-const logoMask = document.querySelector(".logo-mask");
+const reveal = document.getElementById("reveal");
 const blackLogo = document.querySelector(".logo-black");
+const preloader = document.getElementById("preloader");
 
-/**
- * Update tiến độ hiển thị
- * value = 0 -> 100
- */
-function setProgress(value) {
-    logoMask.style.width = `${value}%`;
-}
+/*
+    DEMO PROGRESS
 
-/**
- * Demo tiến độ load
- * Thực tế bạn thay bằng progress thật
- */
+    Thay bằng progress thật của website
+    nếu muốn.
+*/
+
 let progress = 0;
 
-const fakeLoading = setInterval(() => {
+const loader = setInterval(() => {
 
-    progress += Math.random() * 8;
+    progress++;
+
+    reveal.style.width = progress + "%";
 
     if (progress >= 100) {
-        progress = 100;
-    }
 
-    setProgress(progress);
+        clearInterval(loader);
 
-    if (progress === 100) {
-
-        clearInterval(fakeLoading);
-
-        // Bước 1:
-        // Chữ đen -> trắng trong 1s
-
+        // Giữ logo đen 0.2s
         setTimeout(() => {
 
-            blackLogo.classList.add("fade-white");
+            // Chữ đen -> trắng trong 1s
+            blackLogo.classList.add("to-white");
 
-            // Bước 2:
-            // nền trắng fade đi trong 1s
-
+            // Chờ xong hiệu ứng trên
             setTimeout(() => {
 
-                preloader.classList.add("hide");
+                // Nền trắng fade đi trong 1s
+                preloader.classList.add("fade-out");
 
                 setTimeout(() => {
+
                     preloader.remove();
+
                 }, 1000);
 
             }, 1000);
@@ -54,4 +45,4 @@ const fakeLoading = setInterval(() => {
 
     }
 
-}, 100);
+}, 25);
