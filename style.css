@@ -168,3 +168,21 @@ header {
 
     filter: brightness(0);
 }
+
+.logo-black {
+    opacity: 1;
+}
+
+.logo-black.to-white {
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+#preloader {
+    opacity: 1;
+}
+
+#preloader.fade-out {
+    opacity: 0;
+    transition: opacity 1s ease;
+}
