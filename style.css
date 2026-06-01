@@ -192,12 +192,4 @@ header {
     transition: opacity 1s ease;
     pointer-events: none;
 }
-#preloader *,
-#preloader img,
-.logo,
-.logo-white,
-.logo-black {
-    animation: none !important;
-    transform: none !important;
-    transition: none !important;
-}
+
