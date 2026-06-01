@@ -115,22 +115,35 @@ header {
 /* =========================
    PRELOADER
 ========================= */
+#preloader {
+    position: fixed;
+    inset: 0;
+    background: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 99999;
+}
+
 .logo-wrapper {
     position: relative;
-    display: inline-block;
+    width: min(900px, 80vw);
 }
 
 .logo {
-    width: min(900px, 80vw);
     display: block;
+    width: 100%;
+    height: auto;
 }
 
-/* Logo trắng */
+/* logo trắng */
 .logo-white {
     display: block;
 }
 
-/* Vùng reveal */
+/* lớp reveal */
 #reveal {
     position: absolute;
     top: 0;
@@ -142,7 +155,7 @@ header {
     overflow: hidden;
 }
 
-/* QUAN TRỌNG */
+/* logo đen */
 .logo-black {
     position: absolute;
     top: 0;
