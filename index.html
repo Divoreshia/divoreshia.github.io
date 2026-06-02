@@ -30,20 +30,14 @@ integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIe
  <!-- Loader -->
     <div id="preloader">
         <div class="logo-wrapper">
-            <!-- Logo trắng -->
+            <!-- Logo nằm dưới cùng, mask sẽ trượt sang phải để lộ logo -->
             <img
                 src="Hello/name/loader.png"
-                class="logo logo-white"
+                class="logo"
                 alt=""
             >
-            <!-- Logo đen được mask -->
-            <div id="reveal">
-                <img
-                    src="Hello/name/loader.png"
-                    class="logo logo-black"
-                    alt=""
-                >
-            </div>
+            <!-- Mask trắng trượt sang phải theo tiến độ load -->
+            <div id="loader-mask"></div>
         </div>
     </div>
 
