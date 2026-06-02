@@ -106,7 +106,7 @@ header {
 }
 
 
- /* LOADER  */
+/* LOADER */
 
 #app {
     min-height: 100vh;
@@ -177,4 +177,3 @@ header {
     transition: opacity 0.8s ease;
     pointer-events: none;
 }
-
