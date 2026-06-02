@@ -1,12 +1,14 @@
-const reveal = document.getElementById("reveal");
-const blackLogo = document.querySelector(".logo-black");
 const preloader = document.getElementById("preloader");
+const mask = document.getElementById("loader-mask");
 
 /*
-    DEMO PROGRESS
+    LOADER ANIMATION
+    - Logo nằm dưới cùng
+    - Mask trắng che phủ từ trái sang phải
+    - Khi load tiến triển → mask trượt dần ra bên phải, lộ logo từ trái sang
+    - Load xong → preloader fade out
 
-    Thay bằng progress thật của website
-    nếu muốn.
+    Thay bằng progress thật của website nếu muốn.
 */
 
 let progress = 0;
@@ -15,34 +17,29 @@ const loader = setInterval(() => {
 
     progress++;
 
-    reveal.style.width = progress + "%";
+    // Mask thu dần từ trái: translateX tương ứng với % đã load
+    // progress 0% → translateX(0%) = che hoàn toàn
+    // progress 100% → translateX(100%) = trượt ra ngoài hẳn bên phải
+    mask.style.transform = `translateX(${progress}%)`;
 
     if (progress >= 100) {
 
         clearInterval(loader);
 
-        // Giữ logo đen 0.2s
+        // Chờ mask trượt xong hoàn toàn (transition 0.1s cuối)
         setTimeout(() => {
 
-            // Chữ đen -> trắng trong 1s
-            blackLogo.classList.add("to-white");
+            // Fade out toàn bộ preloader
+            preloader.classList.add("fade-out");
 
-            // Chờ xong hiệu ứng trên
             setTimeout(() => {
 
-                // Nền trắng fade đi trong 1s
-                preloader.classList.add("fade-out");
+                preloader.remove();
 
-                setTimeout(() => {
+            }, 800);
 
-                    preloader.remove();
-
-                }, 1000);
-
-            }, 1000);
-
-        }, 200);
+        }, 300);
 
     }
 
-}, 25);
+}, 20);
