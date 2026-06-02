@@ -54,7 +54,7 @@ body {
   user-select: none;
 }
 
-.mySwiper2 {
+.swiper .mySwiper2 {
     height: 100px;
     box-sizing: border-box;
     padding: 10px 0;
