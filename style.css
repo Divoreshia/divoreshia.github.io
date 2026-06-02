@@ -155,7 +155,7 @@ header {
 .logo-white {
     position: relative;
     z-index: 1;
-    color: #ffffff;
+    filter: brightness(100)
 }
 
 /* lớp mask */
