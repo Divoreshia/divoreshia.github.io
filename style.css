@@ -127,70 +127,54 @@ header {
     align-items: center;
 
     z-index: 99999;
-
     opacity: 1;
 }
 
-/* container logo */
+/* Container bọc logo + mask */
 
 .logo-wrapper {
     position: relative;
-
     width: min(900px, 80vw);
-
     line-height: 0;
+    overflow: hidden; /* quan trọng: cắt mask khi trượt ra ngoài */
 }
 
-/* cả hai logo */
+/* Logo nằm dưới cùng — luôn hiển thị, mask che phía trên */
 
 .logo {
     display: block;
-
     width: 100%;
     height: auto;
-}
-
-/* logo trắng */
-
-.logo-white {
     position: relative;
     z-index: 1;
-    filter: brightness(100)
 }
 
-/* lớp mask */
+/*
+    Mask trắng nằm TRÊN logo (z-index cao hơn).
+    Bắt đầu: translateX(0%) → che toàn bộ logo.
+    Khi load: translateX tăng dần → trượt sang phải → lộ logo từ trái.
+    Kết thúc: translateX(100%) → ra ngoài hoàn toàn.
+    transition ngắn để chuyển động mượt giữa các bước.
+*/
 
-#reveal{
-    position:absolute;
-    top:0;
-    left:0;
+#loader-mask {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
 
-    width:0%;
-    height:auto;
+    background: #ffffff;
 
-    overflow:hidden;
+    transform: translateX(0%);
+    transition: transform 0.05s linear;
+
+    will-change: transform;
 }
 
-.logo-black{
-    width:min(900px,80vw);
-    height:auto;
-    display:block;
-
-    filter:brightness(0);
-}
-
-/* đen -> trắng */
-
-.logo-black.to-white {
-    opacity: 0;
-    transition: opacity 1s ease;
-}
-
-/* fade loader */
+/* Fade toàn bộ preloader khi load xong */
 
 #preloader.fade-out {
     opacity: 0;
-    transition: opacity 1s ease;
+    transition: opacity 0.8s ease;
     pointer-events: none;
 }
 
