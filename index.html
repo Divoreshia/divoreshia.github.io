@@ -30,18 +30,17 @@ integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIe
  <!-- Loader -->
     <div id="preloader">
         <div class="logo-wrapper">
-            <!-- Logo nằm dưới cùng, mask sẽ trượt sang phải để lộ logo -->
             <img
                 src="Hello/name/loader.png"
                 class="logo"
                 alt=""
             >
-            <!-- Mask trắng trượt sang phải theo tiến độ load -->
             <div id="loader-mask"></div>
         </div>
     </div>
 
 <!--HEADER-->
+<div class="header-trigger"></div>
   <header>
   <div class="inner">  
     <ul class="navigate">
@@ -65,78 +64,27 @@ integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIe
     <p>Divoreshia @2024</p>
   </div>
 
-<!-- <div class="position-fixed bottom-0 end-100">  
-    <ul class="navigate">
-
-      <li>
-        <div> <img src="hello/icon/x.png"> </div>
-      </li>
-        
-      <li>
-        <div> <img src="hello/icon/ytb.png"> </div>
-      </li>
-
-      <li>
-        <div> <img src="hello/icon/oktok.png"> </div>
-      </li>
-
-    </ul>
-  </div>   -->
 
 
-
-<main class="canvas" id="app"> 
-    <!--DIVORESHIA-->
-
-
-
+<main class="canvas"> 
+ 
     <!--background-->
-  <div class="swiper mySwiper">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide">
-        <img src="Hello/media/bg1.png">
-      </div>
+<div class="swiper mySwiper">
+    <div class="swiper-wrapper"></div>
+</div>
 
-      <div class="swiper-slide">
-        <img src="Hello/media/bg2.png">
-      </div>
-
-      <div class="swiper-slide">
-        <img src="Hello/media/bg3.jpg">
-      </div>
-
-      <div class="swiper-slide">
-        <img src="Hello/media/bg4.jpg"> 
-      </div>
-  <!--background thumb slider-->
-  <div thumbsSlider="" class="swiper mySwiper2">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide">
-        <img src="Hello/media/bg1.png">
-      </div>
-
-      <div class="swiper-slide">
-        <img src="Hello/media/bg2.png">
-      </div>
-
-      <div class="swiper-slide">
-        <img src="Hello/media/bg3.jpg">
-      </div>
-
-      <div class="swiper-slide">
-        <img src="Hello/media/bg4.jpg"> 
-    </div>
-  </div>
-
-    </div>
-  </div>
-
-  <script src="script.js"></script>
+<div thumbsSlider class="swiper mySwiper2 hidden">
+    <div class="swiper-wrapper"></div>
+</div>
     <!--Main Part-->
 
 
+<div id="thumbToggle">
+    VIEW
+</div>
 
-</main> 
+</main>
+<script src="script.js"></script>
 <script src="loader.js"></script>
 <!--GO TO TOP BUTTON-->
 <!-- <div>
