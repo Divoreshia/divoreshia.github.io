@@ -4,10 +4,11 @@ body {
   z-index: 0;
   height: 100%;
   width: 100%;
+  overflow: hidden;
 }
 
 body {
-  background: #eee;
+  background: #000;
   color: #000;
 }
 
@@ -27,22 +28,44 @@ body {
   user-select: none;
 }
 
+
+
+.swiper-slide{
+    background-position:center;
+    background-repeat:no-repeat;
+    background-size:cover;
+}
+
+
+
+
+
+
+
+
+
+
 /*swiper*/
 
-.swiper {
-  width: 100%;
-  height: 100%;
-  margin-left: auto;
-  margin-right: auto;
+.mySwiper {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    z-index: 0;
 }
 
 .swiper-wrapper {
-  display:flexbox;
+  display: flex;
 }
 
 .swiper-slide {
-  background-size: cover;
-  background-position: center;
+    width: 100vw;
+    height: 100vh;
 }
 
 .swiper-slide img {
@@ -60,29 +83,115 @@ body {
     padding: 10px 0;
 }
 
+.mySwiper2 {
+    position: absolute;
+	height: 90px;
+    width: 100vw;
+    bottom: 90px;
+	overflow: visible;
+	transition:
+        opacity .6s ease,
+        transform .6s ease;
+	background: transparent;
+
+}
+
+.mySwiper2::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+    top: 5px;
+    height: calc(100% - 10px);
+	background: rgba(255,255,255,.1);
+	
+	z-index: 1;
+}
+
+.mySwiper2.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.mySwiper2 .swiper-wrapper {
+    position:relative;
+    z-index:2;
+}
+
 .mySwiper2 .swiper-slide {
-    width: 25%;
+    aspect-ratio: var(--viewport-ratio);
+	width: auto;
     height: 100%;
-    opacity: 0.4;
+    overflow: hidden;
+    border-radius: 12px;
+	flex-shrink: 0;
+    transition:
+        opacity .5s ease,
+        transform .5s ease;
+		
+	z-index: 2;
+}
+.mySwiper2 .swiper-slide img {
+
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+
+    display: block;
 }
 
 .mySwiper2 .swiper-slide-thumb-active {
     opacity: 1;
+    transform: scale(1.05);
+	z-index: 10;
+
+    outline: 2px solid rgba(255,255,255,.8);
+    outline-offset: 2px;
 }
 
 
-/* go to top button*/
 
-.gototop {
-  display: none;
-  border:1px solid gray;
-  border-radius: 50%;
-  position: fixed;
-  padding: 4px 5px;
-  right:40px;
-  bottom: 100px;
-  z-index: 500;
+
+/*thumb toggle*/
+
+#thumbToggle {
+    position: fixed;
+
+    left: 25px;
+    bottom: 25px;
+
+    z-index: 2000;
+
+    color: white;
+
+    font-size: 12px;
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    backdrop-filter: blur(10px);
+    background: rgba(255,255,255,.08);
+
+    border: 1px solid rgba(255,255,255,.15);
+	box-shadow:
+        0 4px 20px rgba(0,0,0,.25);
+
+    border-radius: 30px;
+
+    padding: 10px 18px;
+
+    transition: all .4s ease;
 }
+
+#thumbToggle:hover {
+    transform: translateY(-3px);
+}
+
+
+
+
+
 
 /*canvas*/
 
@@ -94,13 +203,43 @@ main{
 
 /*header*/
 header {
-  position: absolute;
+    position: fixed;
 
-  width: 100%;
-  z-index: 100;
-  display: flex;
-  transition: 300ms;
+    top: -70px;
+    left: 0;
+
+    width: 100%;
+    height: 70px;
+
+    z-index: 1400;
+
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+
+    background: rgba(255,255,255,.08);
+
+    transition:
+        transform .5s ease,
+        top .5s ease;
 }
+
+.header-trigger {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 25px;
+
+    z-index: 1500;
+}
+.header-trigger:hover + header,
+header:hover {
+    top: 0;
+}
+
+
 .inner {
 
   margin: 10px;
@@ -116,20 +255,31 @@ header {
   list-style: none;
   display: flex;
 }
+.navigate li {
+    transition: transform .35s ease;
+}
+.navigate li:hover {
+    transform: translateY(-4px);
+}
+
 .navigate>li img{
   justify-content: center;
-
-  display: inline-flexbox;
   height: 30px;
   margin: 5px 5px 5px 5px;
 }
-
-
-/* LOADER */
-
-#app {
-    min-height: 100vh;
+.navigate li img {
+    transition:
+        transform .4s ease,
+        opacity .4s ease;
 }
+
+.navigate li:hover img {
+    transform: scale(1.08);
+    opacity: .8;
+}
+
+
+
 
 /* =========================
    LOADER
@@ -166,6 +316,14 @@ header {
     height: auto;
     position: relative;
     z-index: 1;
+	transition:
+        opacity 1s ease,
+        transform 1s ease;
+}
+
+.logo.fade-out {
+    opacity: 0;
+	transform: scale(1.05);
 }
 
 /*
@@ -189,10 +347,14 @@ header {
     will-change: transform;
 }
 
+#loader-mask.fade-out {
+    opacity: 0;
+    transition: opacity 1.0s ease;
+}
 /* Fade toàn bộ preloader khi load xong */
 
 #preloader.fade-out {
     opacity: 0;
-    transition: opacity 0.8s ease;
+    transition: opacity 1.0s ease;
     pointer-events: none;
 }
