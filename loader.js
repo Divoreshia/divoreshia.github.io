@@ -22,24 +22,26 @@ const loader = setInterval(() => {
     // progress 100% → translateX(100%) = trượt ra ngoài hẳn bên phải
     mask.style.transform = `translateX(${progress}%)`;
 
-    if (progress >= 100) {
+if (progress >= 100) {
 
-        clearInterval(loader);
+    clearInterval(loader);
 
-        // Chờ mask trượt xong hoàn toàn (transition 0.1s cuối)
+    setTimeout(() => {
+
+        document.querySelector(".logo")
+            .classList.add("fade-out");
+
         setTimeout(() => {
 
-            // Fade out toàn bộ preloader
             preloader.classList.add("fade-out");
 
             setTimeout(() => {
-
                 preloader.remove();
-
             }, 800);
 
-        }, 300);
+        }, 800);
 
-    }
+    }, 300);
+}
 
 }, 20);
