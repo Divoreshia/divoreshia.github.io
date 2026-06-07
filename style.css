@@ -1,3 +1,6 @@
+/* ==========================================================================
+   RESET & BASE STYLES
+   ========================================================================== */
 html,
 body {
   position: relative;
@@ -5,19 +8,24 @@ body {
   height: 100%;
   width: 100%;
   overflow: hidden;
+  user-select: none; 
 }
 
 body {
   background: #000;
   color: #000;
+  margin: 0;
+  padding: 0;
 }
 
-/*bottom*/
+/* ==========================================================================
+   BOTTOM TEXT (Văn bản cố định góc phải bên dưới)
+   ========================================================================== */
 .bottomtext {
-  position: sticky;
   z-index: 50;
 }
-.bottomtext>p {
+
+.bottomtext > p {
   color: azure;
   font-family: "Indie Flower", cursive;
   font-weight: 400;
@@ -28,333 +36,296 @@ body {
   user-select: none;
 }
 
-
-
-.swiper-slide{
-    background-position:center;
-    background-repeat:no-repeat;
-    background-size:cover;
-}
-
-
-
-
-
-
-
-
-
-
-/*swiper*/
-
+/* ==========================================================================
+   SWIPER MAIN (Màn hình trượt ảnh lớn chạy nền)
+   ========================================================================== */
 .mySwiper {
-    position: fixed;
-
-    top: 0;
-    left: 0;
-
-    width: 100vw;
-    height: 100vh;
-
-    z-index: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--canvas-w, 100vw);
+  height: var(--canvas-h, 100vh);
+  transition: none;
+  z-index: 0;
 }
 
-.swiper-wrapper {
-  display: flex;
-}
-
-.myswiper .swiper-slide {
-    width: 100vw;
-    height: 100vh;
-}
-
-.swiper-slide img {
-  display:block;
-  position: relative;
+.mySwiper .swiper-slide {
   width: 100%;
   height: 100%;
-  object-fit:cover;
+  position: relative;
+  background: #000; 
+}
+
+/* 🌟 CẬP NHẬT SELECTOR THEO CHUẨN SWIPER 12 */
+.mySwiper .swiper-slide img.swiper-image-main {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+  z-index: 5; /* Trồi lên trên background đen */
   user-select: none;
+  pointer-events: none;
 }
 
-.swiper .mySwiper2 {
-    height: 100px;
-    box-sizing: border-box;
-    padding: 10px 0;
+/* Định vị Spinner xoay tròn mặc định của Swiper 12 */
+.swiper-lazy-preloader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
 }
 
-.mySwiper2 {
-    position: absolute;
-	height: 90px;
-    width: 100vw;
-    bottom: 90px;
-	overflow: visible;
-	transition:
-        opacity .6s ease,
-        transform .6s ease;
-	background: transparent;
-
-}
-
-.mySwiper2::before {
-	content: "";
-	position: absolute;
-	left: 0;
-	right: 0;
-    top: 5px;
-    height: calc(100% - 10px);
-	background: rgba(255,255,255,.1);
-	
-	pointer-events:none;
-	z-index: 1;
+/* ==========================================================================
+   SWIPER THUMBNAIL - TỐI ƯU TRÀN VIỀN (GIỮ NGUYÊN THUỘC TÍNH GỐC)
+   ========================================================================== */
+   
+ :root {
+  /* Tỷ lệ này giúp tính toán chiều cao thanh trượt dựa trên chiều rộng màn hình */
+  --window-ratio: 1.7778; /* Mặc định cho màn hình 16:9 */
 }
 
 .mySwiper2.hidden {
     opacity: 0;
+	visibility: hidden;
     pointer-events: none;
+    transform: translateY(20px);
 }
 
-.mySwiper2 .swiper-wrapper {
-    position:relative;
-    z-index:2;
+.mySwiper2 {
+  position: absolute;
+  width: 100vw;
+  /* Tính chiều cao dựa trên tỉ lệ màn hình: rộng chia tỉ lệ = cao thực tế */
+  /* Ở đây ta lấy ví dụ thumbnail chiếm khoảng 15% chiều cao canvas */
+  height: calc((100vw / var(--window-ratio)) * 0.15); 
+  min-height: 100px; /* Giới hạn không để quá nhỏ */
+  max-height: 150px;
+  bottom: 90px;
+  padding: 0 100px;
+  overflow: visible; 
+  z-index: 1000 ;
+  will-change: opacity, transform;
+  
+  opacity: 1 ;
+  display: block ;
+  visibility: visible;
+  transition: opacity 0.5s ease, transform 0.5s ease ;
+  
+  /* Mask mờ 2 rìa */
+  -webkit-mask-image: linear-gradient(to right, transparent 0px, black 100px, black calc(100% - 100px), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0px, black 100px, black calc(100% - 100px), transparent 100%);
 }
 
+/* Hiệu ứng làm mờ 2 rìa bằng ::after */
+.mySwiper2::after {
+  display: none; 
+}
+
+/* Lớp nền mờ gốc của bạn */
+.mySwiper2::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1); 
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 12px;
+}
 .mySwiper2 .swiper-slide {
-
-    height: 100%;
-    overflow: hidden;
-    border-radius: 12px;
-	flex-shrink: 0;
-    transition:
-        opacity .5s ease,
-        transform .5s ease;
-		
-	z-index: 2;
+  flex-shrink: 0;
+  width: auto; 
+  min-width: 80px;
+  height: 100% ;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
 }
+
 .mySwiper2 .swiper-slide img {
-
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center center;
-
-    display: block;
+  /* Chiều cao của ảnh thumbnail bằng 90% chiều cao của container swiper */
+  height: 90% ; 
+  width: auto;
+  max-width: 100%;
+  aspect-ratio: var(--window-ratio); /* Ép ảnh thumbnail theo tỷ lệ của canvas */
+  object-fit: cover;
+  border-radius: 12px;
+  transition: all 0.4s ease;
+  transform: scale(1);
+  border: 2px solid transparent;
 }
 
+/* Tối ưu hiệu ứng Active để tràn viền */
 .mySwiper2 .swiper-slide-thumb-active {
-    opacity: 1;
-    transform: scale(1.05);
-	z-index: 10;
-
-    outline: 2px solid rgba(255,255,255,.8);
-    outline-offset: 2px;
+  opacity: 1;
+  transition: all 0.4s ease;
 }
 
+.mySwiper2 .swiper-slide-thumb-active img {
+  transform: scale(1.1); 
+  z-index: 100;
+  border-color: #fff;
+}
 
-
-
-/*thumb toggle*/
-
+/* ==========================================================================
+   TOGGLE BUTTON (Nút bấm Ẩn/Hiện thanh Thumbnail)
+   ========================================================================== */
 #thumbToggle {
-    position: fixed;
-
-    left: 25px;
-    bottom: 25px;
-
-    z-index: 2000;
-
-    color: white;
-
-    font-size: 12px;
-    letter-spacing: 2px;
-
-    cursor: pointer;
-
-    backdrop-filter: blur(10px);
-    background: rgba(255,255,255,.08);
-
-    border: 1px solid rgba(255,255,255,.15);
-	box-shadow:
-        0 4px 20px rgba(0,0,0,.25);
-
-    border-radius: 30px;
-
-    padding: 10px 18px;
-
-    transition: all .4s ease;
+  position: fixed;
+  left: 25px;
+  bottom: 25px;
+  z-index: 2000;
+  color: white;
+  font-size: 12px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, .25);
+  border-radius: 30px;
+  padding: 10px 18px;
+  transition: all .4s ease;
+  user-select: none;
 }
 
 #thumbToggle:hover {
-    transform: translateY(-3px);
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, .15);
 }
 
-
-
-
-
-
-/*canvas*/
-
-main{
+/* ==========================================================================
+   HEADER NAVIGATION (Thanh trình đơn ẩn/hiện thông minh)
+   ========================================================================== */
+main {
   width: 100%;
   height: 100%;
   position: relative;
 }
 
-/*header*/
 header {
-    position: fixed;
-
-    top: -70px;
-    left: 0;
-
-    width: 100%;
-    height: 70px;
-
-    z-index: 1400;
-
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-
-    background: rgba(255,255,255,.08);
-
-    transition:
-        transform .5s ease,
-        top .5s ease;
+  position: fixed;
+  top: -70px;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  z-index: 1400;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  background: rgba(255, 255, 255, .08);
+  transition: transform .5s ease, top .5s ease;
 }
 
 .header-trigger {
-    position: fixed;
-
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 25px;
-
-    z-index: 1500;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 25px;
+  z-index: 1500;
 }
+
 .header-trigger:hover + header,
 header:hover {
-    top: 0;
+  top: 0;
 }
 
-
 .inner {
-
   margin: 10px;
 }
 
 .navigate {
-  /* background-color: rgba(1,1,1,1);  */
   display: flex; 
   margin: 10px;
+  padding: 0;
 }
 
-.navigate>li {
+.navigate > li {
   list-style: none;
   display: flex;
 }
+
 .navigate li {
-    transition: transform .35s ease;
-}
-.navigate li:hover {
-    transform: translateY(-4px);
+  transition: transform .35s ease;
 }
 
-.navigate>li img{
-  justify-content: center;
-  height: 30px;
-  margin: 5px 5px 5px 5px;
+.navigate li:hover {
+  transform: translateY(-4px);
 }
+
+.navigate > li img {
+  height: 30px;
+  margin: 5px;
+}
+
 .navigate li img {
-    transition:
-        transform .4s ease,
-        opacity .4s ease;
+  transition: transform .4s ease, opacity .4s ease;
 }
 
 .navigate li:hover img {
-    transform: scale(1.08);
-    opacity: .8;
+  transform: scale(1.08);
+  opacity: .8;
 }
 
-
-
-
-/* =========================
-   LOADER
-========================= */
-
+/* ==========================================================================
+   PRELOADER ANIMATION (Hiệu ứng mở trang)
+   ========================================================================== */
 #preloader {
-    position: fixed;
-    inset: 0;
-
-    background: #ffffff;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    z-index: 99999;
-    opacity: 1;
+  position: fixed;
+  inset: 0;
+  background: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  opacity: 1;
+  transition: opacity 0.8s ease;
 }
-
-/* Container bọc logo + mask */
 
 .logo-wrapper {
-    position: relative;
-    width: min(900px, 80vw);
-    line-height: 0;
-    overflow: hidden; /* quan trọng: cắt mask khi trượt ra ngoài */
+  position: relative;
+  width: min(900px, 80vw);
+  line-height: 0;
+  overflow: hidden;
 }
 
-/* Logo nằm dưới cùng — luôn hiển thị, mask che phía trên */
-
 .logo {
-    display: block;
-    width: 100%;
-    height: auto;
-    position: relative;
-    z-index: 1;
-	transition:
-        opacity 1s ease,
-        transform 1s ease;
+  display: block;
+  width: 100%;
+  height: auto;
+  position: relative;
+  z-index: 1;
+  transition: opacity 1s ease, transform 1s ease;
 }
 
 .logo.fade-out {
-    opacity: 0;
-	transform: scale(1.05);
+  opacity: 0;
+  transform: scale(1.05);
 }
 
-/*
-    Mask trắng nằm TRÊN logo (z-index cao hơn).
-    Bắt đầu: translateX(0%) → che toàn bộ logo.
-    Khi load: translateX tăng dần → trượt sang phải → lộ logo từ trái.
-    Kết thúc: translateX(100%) → ra ngoài hoàn toàn.
-    transition ngắn để chuyển động mượt giữa các bước.
-*/
-
 #loader-mask {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-
-    background: #ffffff;
-
-    transform: translateX(0%);
-    transition: transform 0.05s linear;
-
-    will-change: transform;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: #ffffff;
+  transform: translateX(0%);
+  transition: transform 0.05s linear, opacity 0.8s ease;
+  will-change: transform;
 }
 
 #loader-mask.fade-out {
-    opacity: 0;
-    transition: opacity 1.0s ease;
+  opacity: 0;
 }
-/* Fade toàn bộ preloader khi load xong */
 
 #preloader.fade-out {
-    opacity: 0;
-    transition: opacity 1.0s ease;
-    pointer-events: none;
+  opacity: 0;
+  pointer-events: none;
 }

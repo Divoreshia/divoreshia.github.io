@@ -1,403 +1,123 @@
+/* ==========================================================================
+   1. REAL CANVAS ASPECT RATIO 
+   ========================================================================== */
+   
+function updateRatio() {
+    const ratio = window.innerWidth / window.innerHeight;
+    document.documentElement.style.setProperty('--window-ratio', ratio);
+    
+    // Thumbnail cập nhật trực tiếp theo resize, không cần delay
+    if (window.swiperThumb) window.swiperThumb.update();
+    if (window.swiperMain) window.swiperMain.update();
+}
+
+window.addEventListener('resize', updateRatio);
+updateRatio();
+
+/* ==========================================================================
+   2. DATABASE & DOM INJECTION
+   ========================================================================== */
 const backgrounds = [
-"Hello/media/bg1.png",
-"Hello/media/bg2.png",
-"Hello/media/bg3.jpg",
-"Hello/media/bg4.jpg"
+    "Hello/media/bg1.jpg", 
+	"Hello/media/bg2.jpg",
+	"Hello/media/bg3.jpg",
+    "Hello/media/bg4.jpg", 
+	"Hello/media/bg5.jpg",
+	"Hello/media/bg6.jpg",
+    "Hello/media/bg7.jpg", 
+	"Hello/media/bg8.jpg",
+    "Hello/media/bg1.jpg", 
+	"Hello/media/bg2.jpg",
+	"Hello/media/bg3.jpg",
+    "Hello/media/bg4.jpg", 
+	"Hello/media/bg5.jpg",
+	"Hello/media/bg6.jpg",
+    "Hello/media/bg7.jpg", 
+	"Hello/media/bg8.jpg",
 ];
 
-const mainWrapper =
-document.querySelector(".mySwiper .swiper-wrapper");
+const mainWrapper = document.querySelector(".mySwiper .swiper-wrapper");
+const thumbWrapper = document.querySelector(".mySwiper2 .swiper-wrapper");
 
-const thumbWrapper =
-document.querySelector(".mySwiper2 .swiper-wrapper");
-
-/* =====================
-BUILD THUMB DATA
-===================== */
-
-const thumbData = [];
-
-for(let i = 0; i < 30; i++){
-thumbData.push(...backgrounds);
+if (mainWrapper && thumbWrapper) {
+    backgrounds.forEach(src => {
+        mainWrapper.insertAdjacentHTML("beforeend", `<div class="swiper-slide"><img src="${src}" loading="lazy" class="swiper-image-main" alt="Background"><div class="swiper-lazy-preloader"></div></div>`);
+        thumbWrapper.insertAdjacentHTML("beforeend", `<div class="swiper-slide"><img src="${src}" loading="lazy" alt="Thumbnail"></div>`);
+    });
 }
 
-/* =====================
-BUILD MAIN SLIDES
-===================== */
+/* ==========================================================================
+   3. INITIALIZE SWIPER
+   ========================================================================== */
+// Sử dụng window để tránh lỗi phạm vi biến
+window.swiperThumb = null;
+window.swiperMain = null;
 
-backgrounds.forEach(src => {
-
-
-mainWrapper.insertAdjacentHTML(
-    "beforeend",
-    `
-    <div class="swiper-slide"
-         style="background-image:url('${src}')">
-    </div>
-    `
-);
-
-
-});
-
-/* =====================
-BUILD THUMB SLIDES
-===================== */
-
-thumbData.forEach(src => {
-
-
-thumbWrapper.insertAdjacentHTML(
-    "beforeend",
-    `
-    <div class="swiper-slide">
-        <img src="${src}" alt="">
-    </div>
-    `
-);
-
-
-});
-
-/* =====================
-THUMB SWIPER
-===================== */
-
-const swiperThumb = new Swiper(".mySwiper2", {
-
-
-slidesPerView: "auto",
-
-centeredSlides: true,
-
-freeMode: true,
-
-freeModeMomentum: true,
-
-grabCursor: true,
-
-watchSlidesProgress: true,
-
-spaceBetween: 15
-
-
-});
-
-/* =====================
-MAIN SWIPER
-===================== */
-
-const swiperMain = new Swiper(".mySwiper", {
-
-
-loop: true,
-
-effect: "fade",
-
-speed: 1000,
-
-autoplay: {
-    delay: 7000,
-    disableOnInteraction: false
-}
-
-
-});
-
-/* =====================
-CURRENT THUMB
-===================== */
-
-let currentThumbIndex =
-Math.floor(
-thumbData.length / 2
-);
-
-/* =====================
-ACTIVE THUMB
-===================== */
-
-function updateActiveThumb(){
-
-
-Array.from(
-    swiperThumb.slides
-).forEach(slide => {
-
-    slide.classList.remove(
-        "swiper-slide-thumb-active"
-    );
-
-});
-
-swiperThumb.slides[
-    currentThumbIndex
-]?.classList.add(
-    "swiper-slide-thumb-active"
-);
-
-
-}
-
-/* =====================
-RESPONSIVE WIDTH
-===================== */
-
-function updateThumbWidth(){
-
-
-const ratio =
-    window.innerWidth /
-    window.innerHeight;
-
-document
-    .querySelectorAll(
-        ".mySwiper2 .swiper-slide"
-    )
-    .forEach(slide => {
-
-        slide.style.width =
-            `${90 * ratio}px`;
-
+function initSwiperSliders() {
+    window.swiperThumb = new Swiper(".mySwiper2", {
+        loop: true,
+        centeredSlides: true,
+        watchSlidesProgress: true,
+        spaceBetween: 16,
+        slidesPerView: 6,
+        slideToClickedSlide: true,
+		breakpoints: {
+            320: {slidesPerView: 3, spaceBetween: 10},
+			640: {slidesPerView: 4, spaceBetween: 20},
+			1080: {slidesPerView: 5, spaceBetween: 30}			
+        }
     });
 
-
+    window.swiperMain = new Swiper(".mySwiper", {
+        loop: true,
+        speed: 1200,
+        autoplay: { delay: 7000, disableOnInteraction: false },
+        effect: "fade",
+        thumbs: { swiper: window.swiperThumb }
+    });
 }
 
-updateThumbWidth();
-
-/* =====================
-INITIAL POSITION
-===================== */
-
-setTimeout(() => {
-
-
-swiperThumb.slideTo(
-    currentThumbIndex,
-    0
-);
-
-updateActiveThumb();
-
-
-}, 300);
-
-/* =====================
-AUTO CENTER
-===================== */
-
-let centerTimer;
-
-function centerThumb(){
-
-
-swiperThumb.slideTo(
-    currentThumbIndex,
-    800
-);
-
-
-}
-
-function resetCenterTimer(){
-
-
-clearTimeout(
-    centerTimer
-);
-
-centerTimer =
-    setTimeout(
-        centerThumb,
-        3000
-    );
-
-
-}
-
-/* =====================
-THUMB EVENTS
-===================== */
-
-swiperThumb.on(
-"touchStart",
-resetCenterTimer
-);
-
-swiperThumb.on(
-"touchMove",
-resetCenterTimer
-);
-
-swiperThumb.on(
-"touchEnd",
-resetCenterTimer
-);
-
-swiperThumb.on(
-"sliderMove",
-resetCenterTimer
-);
-
-swiperThumb.on(
-"click",
-swiper => {
-
-
-    if(
-        swiper.clickedIndex == null
-    ) return;
-
-    currentThumbIndex =
-        swiper.clickedIndex;
-
-    const realIndex =
-        currentThumbIndex %
-        backgrounds.length;
-
-    swiperMain.slideToLoop(
-        realIndex,
-        600
-    );
-
-    swiperThumb.slideTo(
-        currentThumbIndex,
-        600
-    );
-
-    updateActiveThumb();
-
-}
-
-
-);
-
-/* =====================
-MAIN CHANGE
-===================== */
-
-swiperMain.on(
-"slideChange",
-() => {
-
-
-    const nextReal =
-        swiperMain.realIndex;
-
-    const currentReal =
-        currentThumbIndex %
-        backgrounds.length;
-
-    let diff =
-        nextReal -
-        currentReal;
-
-    if(diff > 2)
-        diff -= backgrounds.length;
-
-    if(diff < -2)
-        diff += backgrounds.length;
-
-    currentThumbIndex += diff;
-
-    swiperThumb.slideTo(
-        currentThumbIndex,
-        600
-    );
-
-    updateActiveThumb();
-
-    resetCenterTimer();
-
-}
-
-
-);
-
-/* =====================
-VIEWPORT RATIO
-===================== */
-
-function updateViewportRatio(){
-
-
-const ratio =
-    window.innerWidth /
-    window.innerHeight;
-
-document.documentElement
-    .style.setProperty(
-        "--viewport-ratio",
-        ratio
-    );
-
-
-}
-
-updateViewportRatio();
-
-/* =====================
-TOGGLE THUMB
-===================== */
-
-document.addEventListener(
-"DOMContentLoaded",
-() => {
-
-
-    const toggleBtn =
-        document.getElementById(
-            "thumbToggle"
-        );
-
-    const thumbSlider =
-        document.querySelector(
-            ".mySwiper2"
-        );
-
-    toggleBtn.addEventListener(
-        "click",
-        () => {
-
-            thumbSlider
-                .classList
-                .toggle(
-                    "hidden"
-                );
-
-        }
-    );
-
-}
-
-
-);
-
-/* =====================
-RESIZE
-===================== */
-
-window.addEventListener(
-"resize",
-() => {
-
-
-    updateViewportRatio();
-
-    updateThumbWidth();
-
-    requestAnimationFrame(
-        () => {
-
-            swiperMain.update();
-
-            swiperThumb.update();
-
-        }
-    );
-
-}
-
-
-);
+// Toggle Button
+
+const toggleBtn = document.getElementById("thumbToggle");
+const thumbSlider = document.querySelector(".mySwiper2");
+
+toggleBtn.addEventListener("click", () => {
+    // Chỉ cần thêm/xóa class .hidden
+    thumbSlider.classList.toggle("hidden");
+    
+    // Đổi tên nút
+    const isHidden = thumbSlider.classList.contains("hidden");
+    toggleBtn.textContent = isHidden ? "VIEW" : "HIDE";
+
+    // Nếu vừa hiện ra, gọi update() nhẹ để Swiper khớp lại khung hình (nếu cần)
+    if (!isHidden) {
+        requestAnimationFrame(() => {
+            if (window.swiperThumb) window.swiperThumb.update();
+        });
+    }
+});
+
+
+/* ==========================================================================
+   4. LOADERS
+   ========================================================================== */
+document.addEventListener("DOMContentLoaded", () => {
+    initSwiperSliders();
+
+    const preloader = document.getElementById("preloader");
+    const mask = document.getElementById("loader-mask");
+    
+    if (mask && preloader) {
+        let progress = 0;
+        const loaderInterval = setInterval(() => {
+            progress++;
+            mask.style.transform = `translateX(${progress}%)`;
+            if (progress >= 100) {
+                clearInterval(loaderInterval);
+                preloader.classList.add("fade-out");
+                setTimeout(() => preloader.remove(), 800);
+            }
+        }, 20);
+    }
+});
