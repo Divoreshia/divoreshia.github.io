@@ -1,193 +1,403 @@
 const backgrounds = [
-    "Hello/media/bg1.png",
-    "Hello/media/bg2.png",
-    "Hello/media/bg3.jpg",
-    "Hello/media/bg4.jpg",
+"Hello/media/bg1.png",
+"Hello/media/bg2.png",
+"Hello/media/bg3.jpg",
+"Hello/media/bg4.jpg"
 ];
 
 const mainWrapper =
-    document.querySelector(".mySwiper .swiper-wrapper");
+document.querySelector(".mySwiper .swiper-wrapper");
 
 const thumbWrapper =
-    document.querySelector(".mySwiper2 .swiper-wrapper");
+document.querySelector(".mySwiper2 .swiper-wrapper");
+
+/* =====================
+BUILD THUMB DATA
+===================== */
+
+const thumbData = [];
+
+for(let i = 0; i < 30; i++){
+thumbData.push(...backgrounds);
+}
+
+/* =====================
+BUILD MAIN SLIDES
+===================== */
 
 backgrounds.forEach(src => {
-    const img = new Image();
-	
-    img.src = src;
-	
-    mainWrapper.insertAdjacentHTML(
-        "beforeend",
-        `
-        <div class="swiper-slide"
-             style="background-image:url('${src}')">
-        </div>
-        `
-    );
 
-    thumbWrapper.insertAdjacentHTML(
-        "beforeend",
-        `
-        <div class="swiper-slide">
-            <img src="${src}" alt="">
-        </div>
-        `
-    );
+
+mainWrapper.insertAdjacentHTML(
+    "beforeend",
+    `
+    <div class="swiper-slide"
+         style="background-image:url('${src}')">
+    </div>
+    `
+);
+
 
 });
 
+/* =====================
+BUILD THUMB SLIDES
+===================== */
 
-const thumbInfinite = [];
+thumbData.forEach(src => {
 
-for(let i = 0; i < 50; i++){
-    thumbInfinite.push(...backgrounds);
-}
-initialSlide: Math.floor(thumbInfinite.length / 2);
+
+thumbWrapper.insertAdjacentHTML(
+    "beforeend",
+    `
+    <div class="swiper-slide">
+        <img src="${src}" alt="">
+    </div>
+    `
+);
+
+
+});
+
+/* =====================
+THUMB SWIPER
+===================== */
 
 const swiperThumb = new Swiper(".mySwiper2", {
 
-    loop: true,
-	loopAdditionalSlides: backgrounds.length * 5,
-    slidesPerView: 8,
 
-    centeredSlides: true,
+slidesPerView: "auto",
 
+centeredSlides: true,
 
-    grabCursor: true,
+freeMode: true,
 
-    watchSlidesProgress: true,
+freeModeMomentum: true,
 
-    spaceBetween: 15,
+grabCursor: true,
 
-    loopAdditionalSlides: backgrounds.length,
+watchSlidesProgress: true,
 
-    loopedSlides: backgrounds.length
+spaceBetween: 15
+
 
 });
+
+/* =====================
+MAIN SWIPER
+===================== */
 
 const swiperMain = new Swiper(".mySwiper", {
 
-    loop: true,
 
-    effect: "fade",
+loop: true,
 
-    speed: 1000,
+effect: "fade",
 
-    autoplay: {
-        delay: 7000,
-        disableOnInteraction: false
-    },
+speed: 1000,
 
-    thumbs: {
-        swiper: swiperThumb
-    }
+autoplay: {
+    delay: 7000,
+    disableOnInteraction: false
+}
+
 
 });
 
-function updateThumbWidth() {
+/* =====================
+CURRENT THUMB
+===================== */
 
-    const ratio =
-        window.innerWidth / window.innerHeight;
+let currentThumbIndex =
+Math.floor(
+thumbData.length / 2
+);
 
-    document.querySelectorAll(
+/* =====================
+ACTIVE THUMB
+===================== */
+
+function updateActiveThumb(){
+
+
+Array.from(
+    swiperThumb.slides
+).forEach(slide => {
+
+    slide.classList.remove(
+        "swiper-slide-thumb-active"
+    );
+
+});
+
+swiperThumb.slides[
+    currentThumbIndex
+]?.classList.add(
+    "swiper-slide-thumb-active"
+);
+
+
+}
+
+/* =====================
+RESPONSIVE WIDTH
+===================== */
+
+function updateThumbWidth(){
+
+
+const ratio =
+    window.innerWidth /
+    window.innerHeight;
+
+document
+    .querySelectorAll(
         ".mySwiper2 .swiper-slide"
-    ).forEach(slide => {
+    )
+    .forEach(slide => {
 
         slide.style.width =
-            `${80 * ratio}px`;
+            `${90 * ratio}px`;
 
     });
+
 
 }
 
 updateThumbWidth();
 
+/* =====================
+INITIAL POSITION
+===================== */
+
+setTimeout(() => {
 
 
-
-
-let thumbCenterTimer;
-
-function centerActiveThumb() {
-
-    const activeIndex =
-        swiperMain.realIndex;
-
-	swiperThumb.slideToLoop(
-    swiperMain.realIndex, 800
+swiperThumb.slideTo(
+    currentThumbIndex,
+    0
 );
 
+updateActiveThumb();
+
+
+}, 300);
+
+/* =====================
+AUTO CENTER
+===================== */
+
+let centerTimer;
+
+function centerThumb(){
+
+
+swiperThumb.slideTo(
+    currentThumbIndex,
+    800
+);
+
+
 }
 
-function resetThumbCenterTimer() {
+function resetCenterTimer(){
 
-    clearTimeout(thumbCenterTimer);
 
-    thumbCenterTimer = setTimeout(() => {
+clearTimeout(
+    centerTimer
+);
 
-        centerActiveThumb();
+centerTimer =
+    setTimeout(
+        centerThumb,
+        3000
+    );
 
-    }, 1000);
 
 }
 
-swiperThumb.on("touchStart", resetThumbCenterTimer);
+/* =====================
+THUMB EVENTS
+===================== */
 
-swiperThumb.on("touchMove", resetThumbCenterTimer);
+swiperThumb.on(
+"touchStart",
+resetCenterTimer
+);
 
-swiperThumb.on("touchEnd", resetThumbCenterTimer);
+swiperThumb.on(
+"touchMove",
+resetCenterTimer
+);
 
-swiperThumb.on("sliderMove", resetThumbCenterTimer);
+swiperThumb.on(
+"touchEnd",
+resetCenterTimer
+);
 
-swiperMain.on("slideChange", () => {
-	
-	    swiperThumb.slideToLoop(
-        swiperMain.realIndex,
+swiperThumb.on(
+"sliderMove",
+resetCenterTimer
+);
+
+swiperThumb.on(
+"click",
+swiper => {
+
+
+    if(
+        swiper.clickedIndex == null
+    ) return;
+
+    currentThumbIndex =
+        swiper.clickedIndex;
+
+    const realIndex =
+        currentThumbIndex %
+        backgrounds.length;
+
+    swiperMain.slideToLoop(
+        realIndex,
         600
     );
-		resetThumbCenterTimer();
-});
+
+    swiperThumb.slideTo(
+        currentThumbIndex,
+        600
+    );
+
+    updateActiveThumb();
+
+}
 
 
-function updateViewportRatio() {
+);
 
-    const ratio =
-        window.innerWidth / window.innerHeight;
+/* =====================
+MAIN CHANGE
+===================== */
 
-    document.documentElement.style.setProperty(
+swiperMain.on(
+"slideChange",
+() => {
+
+
+    const nextReal =
+        swiperMain.realIndex;
+
+    const currentReal =
+        currentThumbIndex %
+        backgrounds.length;
+
+    let diff =
+        nextReal -
+        currentReal;
+
+    if(diff > 2)
+        diff -= backgrounds.length;
+
+    if(diff < -2)
+        diff += backgrounds.length;
+
+    currentThumbIndex += diff;
+
+    swiperThumb.slideTo(
+        currentThumbIndex,
+        600
+    );
+
+    updateActiveThumb();
+
+    resetCenterTimer();
+
+}
+
+
+);
+
+/* =====================
+VIEWPORT RATIO
+===================== */
+
+function updateViewportRatio(){
+
+
+const ratio =
+    window.innerWidth /
+    window.innerHeight;
+
+document.documentElement
+    .style.setProperty(
         "--viewport-ratio",
         ratio
     );
+
+
 }
 
 updateViewportRatio();
 
+/* =====================
+TOGGLE THUMB
+===================== */
+
+document.addEventListener(
+"DOMContentLoaded",
+() => {
 
 
-document.addEventListener("DOMContentLoaded", () => {
+    const toggleBtn =
+        document.getElementById(
+            "thumbToggle"
+        );
 
-    const toggleBtn = document.getElementById("thumbToggle");
-    const thumbSlider = document.querySelector(".mySwiper2");
+    const thumbSlider =
+        document.querySelector(
+            ".mySwiper2"
+        );
 
-    toggleBtn.addEventListener("click", () => {
-        thumbSlider.classList.toggle("hidden");
-    });
+    toggleBtn.addEventListener(
+        "click",
+        () => {
 
-});
+            thumbSlider
+                .classList
+                .toggle(
+                    "hidden"
+                );
+
+        }
+    );
+
+}
 
 
+);
 
-window.addEventListener("resize", () => {
+/* =====================
+RESIZE
+===================== */
+
+window.addEventListener(
+"resize",
+() => {
+
 
     updateViewportRatio();
+
     updateThumbWidth();
-    swiperThumb.update();
 
-    requestAnimationFrame(() => {
+    requestAnimationFrame(
+        () => {
 
-        swiperMain.update();
-        swiperThumb.update();
+            swiperMain.update();
 
-    });
+            swiperThumb.update();
 
-});
+        }
+    );
+
+}
+
+
+);
