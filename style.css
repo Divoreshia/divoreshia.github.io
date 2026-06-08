@@ -13,7 +13,7 @@ body {
 
 body {
   background: #000;
-  color: #000;
+  color: #FFF;
   margin: 0;
   padding: 0;
 }
@@ -45,18 +45,25 @@ body {
   left: 0;
   width: var(--canvas-w, 100vw);
   height: var(--canvas-h, 100vh);
-  transition: none;
   z-index: 0;
 }
 
+
+
 .mySwiper .swiper-slide {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  background: #000; 
+    position: absolute ;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;       /* Khóa click các slide đang ẩn để tránh bấm nhầm */
 }
 
-/* 🌟 CẬP NHẬT SELECTOR THEO CHUẨN SWIPER 12 */
+.mySwiper .swiper-slide-active {
+    pointer-events: auto;
+}
+
+
 .mySwiper .swiper-slide img.swiper-image-main {
   position: absolute;
   top: 0;
@@ -64,14 +71,13 @@ body {
   width: 100vw;
   height: 100vh;
   object-fit: cover;
-  object-position: center center;
   display: block;
-  z-index: 5; /* Trồi lên trên background đen */
+  z-index: 5; 
   user-select: none;
   pointer-events: none;
 }
 
-/* Định vị Spinner xoay tròn mặc định của Swiper 12 */
+
 .swiper-lazy-preloader {
   position: absolute;
   left: 50%;
@@ -98,7 +104,8 @@ body {
 
 .mySwiper2 {
   position: absolute;
-  width: 100vw;
+  width: 100%;
+ 
   /* Tính chiều cao dựa trên tỉ lệ màn hình: rộng chia tỉ lệ = cao thực tế */
   /* Ở đây ta lấy ví dụ thumbnail chiếm khoảng 15% chiều cao canvas */
   height: calc((100vw / var(--window-ratio)) * 0.15); 
@@ -111,19 +118,16 @@ body {
   will-change: opacity, transform;
   
   opacity: 1 ;
-  display: block ;
+  display: flex;
+  justify-content: center;
   visibility: visible;
   transition: opacity 0.5s ease, transform 0.5s ease ;
   
-  /* Mask mờ 2 rìa */
-  -webkit-mask-image: linear-gradient(to right, transparent 0px, black 100px, black calc(100% - 100px), transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0px, black 100px, black calc(100% - 100px), transparent 100%);
+
+	-webkit-mask-image: linear-gradient(to right, transparent 0px, black 250px, black calc(100% - 250px), transparent 100%);
+	mask-image: linear-gradient(to right, transparent 0px, black 250px, black calc(100% - 250px), transparent 100%);
 }
 
-/* Hiệu ứng làm mờ 2 rìa bằng ::after */
-.mySwiper2::after {
-  display: none; 
-}
 
 /* Lớp nền mờ gốc của bạn */
 .mySwiper2::before {
@@ -138,16 +142,19 @@ body {
   pointer-events: none;
   border-radius: 12px;
 }
+
+
 .mySwiper2 .swiper-slide {
   flex-shrink: 0;
-  width: auto; 
-  min-width: 80px;
   height: 100% ;
+  opacity: 0.8;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s ease;
+  transition: all 0.5s ease;
+  cursor: pointer;
 }
+
 
 .mySwiper2 .swiper-slide img {
   /* Chiều cao của ảnh thumbnail bằng 90% chiều cao của container swiper */
@@ -165,7 +172,6 @@ body {
 /* Tối ưu hiệu ứng Active để tràn viền */
 .mySwiper2 .swiper-slide-thumb-active {
   opacity: 1;
-  transition: all 0.4s ease;
 }
 
 .mySwiper2 .swiper-slide-thumb-active img {
@@ -286,7 +292,6 @@ header:hover {
   justify-content: center;
   align-items: center;
   z-index: 99999;
-  opacity: 1;
   transition: opacity 0.8s ease;
 }
 
