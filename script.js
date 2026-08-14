@@ -69,7 +69,6 @@ function initSwiperSliders() {
         slideToClickedSlide: false,
         observer: true,
         resizeObserver: true,
-		thumbs: {swiper: swiperThumbs}
     });
 
 // B. Khởi tạo Swiper Main (Khung ảnh lớn hiển thị bên trên)
@@ -83,7 +82,8 @@ function initSwiperSliders() {
 			disableOnInteraction: false 
 		},
 		observer: true,
-		resizeObserver: true
+		resizeObserver: true,
+		thumbs: {swiper: swiperThumbs}
 	});
 
 
