@@ -83,13 +83,7 @@ function initSwiperSliders() {
         resizeObserver: true,
         thumbs: {
             swiper: window.swiperThumb // SỬA: Gọi chính xác biến window.swiperThumb (bỏ chữ s ở cuối)
-        },
-        on: {
-            // Đồng bộ thủ công lớp active để đảm bảo đèn trạng thái luôn sáng đúng ảnh
-            slideChange: function () {
-                syncThumbActive(this.realIndex);
-            }
-        }
+        }, 
     });
 } // SỬA: Bổ sung dấu ngoặc nhọn quan trọng này để đóng hàm initSwiperSliders!
 
