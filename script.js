@@ -1,7 +1,6 @@
 /* ==========================================================================
    1. REAL CANVAS ASPECT RATIO 
    ========================================================================== */
-   
 function updateRatio() {
     const ratio = window.innerWidth / window.innerHeight;
     document.documentElement.style.setProperty('--window-ratio', ratio);
@@ -19,14 +18,13 @@ updateRatio();
    ========================================================================== */
 const backgrounds = [
     "Hello/media/bg1.jpg", 
-	"Hello/media/bg2.jpg",
-	"Hello/media/bg3.jpg",
+    "Hello/media/bg2.jpg",
+    "Hello/media/bg3.jpg",
     "Hello/media/bg4.jpg", 
-	"Hello/media/bg5.jpg",
-	"Hello/media/bg6.jpg",
+    "Hello/media/bg5.jpg",
+    "Hello/media/bg6.jpg",
     "Hello/media/bg7.jpg", 
-	"Hello/media/bg8.jpg",
-
+    "Hello/media/bg8.jpg",
 ];
 
 const mainWrapper = document.querySelector(".mySwiper .swiper-wrapper");
@@ -40,7 +38,7 @@ if (mainWrapper && thumbWrapper) {
 }
 
 /* ==========================================================================
-   3. INITIALIZE SWIPER (ĐỒNG BỘ NATIVE FADE - CHỐNG LỖI LOẠN TUYỆT ĐỐI)
+   3. INITIALIZE SWIPER
    ========================================================================== */
 window.swiperThumb = null;
 window.swiperMain = null;
@@ -58,56 +56,63 @@ function syncThumbActive(realIndex) {
 }
 
 function initSwiperSliders() {
-    // A. Khởi tạo Swiper Thumbnail (Thanh nhỏ hiển thị danh sách bên dưới)
+    // A. Khởi tạo Swiper Thumbnail
     window.swiperThumb = new Swiper(".mySwiper2", {
         loop: true,
-		loopedSlides: backgrounds.length*3,
+        loopedSlides: backgrounds.length, // SỬA: Đặt bằng số lượng ảnh thực tế (8) để tối ưu hóa bộ nhớ DOM
         spaceBetween: 16,
         slidesPerView: 5,           
         centeredSlides: true,
         watchSlidesProgress: true,
-        slideToClickedSlide: false,
+        slideToClickedSlide: true, // GỢI Ý: Chuyển sang true để khi click vào ảnh nhỏ, slider tự cuộn mượt mà
         observer: true,
         resizeObserver: true,
     });
 
-// B. Khởi tạo Swiper Main (Khung ảnh lớn hiển thị bên trên)
-	window.swiperMain = new Swiper(".mySwiper", {
-		loop: true,
-		loopedSlides: backgrounds.length*3,
-		effect: 'fade',
-		speed: 600, 
-		autoplay: { 
-			delay: 7000, 
-			disableOnInteraction: false 
-		},
-		observer: true,
-		resizeObserver: true,
-		thumbs: {swiper: swiperThumbs},
-	});
-
+    // B. Khởi tạo Swiper Main
+    window.swiperMain = new Swiper(".mySwiper", {
+        loop: true,
+        loopedSlides: backgrounds.length, // SỬA: Đồng bộ số lượng slide đệm bằng với slide nhỏ
+        effect: 'fade',
+        speed: 600, 
+        autoplay: { 
+            delay: 7000, 
+            disableOnInteraction: false 
+        },
+        observer: true,
+        resizeObserver: true,
+        thumbs: {
+            swiper: window.swiperThumb // SỬA: Gọi chính xác biến window.swiperThumb (bỏ chữ s ở cuối)
+        },
+        on: {
+            // Đồng bộ thủ công lớp active để đảm bảo đèn trạng thái luôn sáng đúng ảnh
+            slideChange: function () {
+                syncThumbActive(this.realIndex);
+            }
+        }
+    });
+} // SỬA: Bổ sung dấu ngoặc nhọn quan trọng này để đóng hàm initSwiperSliders!
 
 /* ==========================================================================
-	Toggle Button
+    Toggle Button
    ========================================================================== */
 const toggleBtn = document.getElementById("thumbToggle");
 const thumbSlider = document.querySelector(".mySwiper2");
 
-toggleBtn.addEventListener("click", () => {
-    // Chỉ cần thêm/xóa class .hidden
-    thumbSlider.classList.toggle("hidden");
-    
+if (toggleBtn && thumbSlider) { // Kiểm tra phần tử tồn tại để tránh lỗi nếu HTML chưa load xong
+    toggleBtn.addEventListener("click", () => {
+        thumbSlider.classList.toggle("hidden");
+        
+        const isHidden = thumbSlider.classList.contains("hidden");
+        toggleBtn.textContent = isHidden ? "VIEW" : "HIDE";
 
-    const isHidden = thumbSlider.classList.contains("hidden");
-    toggleBtn.textContent = isHidden ? "VIEW" : "HIDE";
-
-    if (!isHidden) {
-        requestAnimationFrame(() => {
-            if (window.swiperThumb) window.swiperThumb.update();
-        });
-    }
-});
-
+        if (!isHidden) {
+            requestAnimationFrame(() => {
+                if (window.swiperThumb) window.swiperThumb.update();
+            });
+        }
+    });
+}
 
 /* ==========================================================================
    4. LOADERS
