@@ -83,7 +83,7 @@ function initSwiperSliders() {
 		},
 		observer: true,
 		resizeObserver: true,
-		thumbs: {swiper: swiperThumbs}
+		thumbs: {swiper: swiperThumbs},
 	});
 
 
